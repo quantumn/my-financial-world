@@ -1,0 +1,152 @@
+---
+title: "Return Calculus"
+output: html_document
+---
+
+
+```{r}
+search() #Search packages installe
+price4<- read.table('price4.txt',header = T)
+price4[1:3,]
+summary(price4)
+NipponSheetGlassCompany_TSE5202<- price4$x5202
+PolaOrbisHoldings_TSE4927<- price4$x4927
+YamahaMotor_TSE7272<- price4$x7272
+TakedaPharmaceuticalCompany_TSE4502<- price4$x4502
+par(mfcol=c(2,2))
+plot(NipponSheetGlassCompany_TSE5202,type="l"
+     ,main="NipponSheetGlassCompany_TSE5202")
+plot(PolaOrbisHoldings_TSE4927,type="l"
+     ,main="PolaOrbisHoldings_TSE4927")
+plot(YamahaMotor_TSE7272,type="l"
+     ,main="YamahaMotor_TSE7272")
+plot(TakedaPharmaceuticalCompany_TSE4502,type="l"
+     ,main="TakedaPharmaceuticalCompany_TSE4502")
+```
+時系列の始点を基準として、価格収益率を求める
+```{r}
+par(mfcol=c(2,2))
+plot(NipponSheetGlassCompany_TSE5202/NipponSheetGlassCompany_TSE5202[1]
+     ,type="l",main="NipponSheetGlassCompany_TSE5202")
+plot(PolaOrbisHoldings_TSE4927/PolaOrbisHoldings_TSE4927[1]
+     ,type="l",main="PolaOrbisHoldings_TSE4927")
+plot(YamahaMotor_TSE7272/YamahaMotor_TSE7272[1]
+     ,type="l",main="YamahaMotor_TSE7272")
+plot(TakedaPharmaceuticalCompany_TSE4502/TakedaPharmaceuticalCompany_TSE4502[1]
+     ,type="l",main="TakedaPharmaceuticalCompany_TSE4502")
+```
+判明した点
+板硝子は最高で2.2倍に株価が成長した
+
+次に対数差収益を求める##
+```{r}
+par(mfcol=c(2,2))
+plot(diff(log(NipponSheetGlassCompany_TSE5202)*100)
+     ,type="l",main="NipponSheetGlassCompany_TSE5202"
+     ,xlab="time",ylab="NipponSheetGlassCompany_TSE5202")
+plot(diff(log(PolaOrbisHoldings_TSE4927)*100)
+     ,type="l",main="PolaOrbisHoldings_TSE4927"
+     ,xlab="time",ylab="NipponSheetGlassCompany_TSE5202")
+plot(diff(log(YamahaMotor_TSE7272)*100)
+     ,type="l",main="YamahaMotor_TSE7272"
+     ,xlab="time",ylab="NipponSheetGlassCompany_TSE5202")
+plot(diff(log(TakedaPharmaceuticalCompany_TSE4502)*100)
+     ,type="l",main="TakedaPharmaceuticalCompany_TSE4502"
+     ,xlab="time",ylab="NipponSheetGlassCompany_TSE5202")
+```
+結論
+板硝子とYamahaMotor_TSE7272のボラは高い。一方、武田薬品のそれは低い
+```{r}
+par(mfcol=c(2,2))
+plot(diff(log(NipponSheetGlassCompany_TSE5202)*100)
+     ,type="l",main="NipponSheetGlassCompany_TSE5202"
+     ,xlab="time",ylab="NipponSheetGlassCompany_TSE5202"
+     ,ylim=range(diff(log(NipponSheetGlassCompany_TSE5202))*100))
+plot(diff(log(PolaOrbisHoldings_TSE4927)*100)
+     ,type="l",main="PolaOrbisHoldings_TSE4927"
+     ,xlab="time",ylab="PolaOrbisHoldings_TSE4927"
+     ,ylim=range(diff(log(PolaOrbisHoldings_TSE4927))*100))
+plot(diff(log(YamahaMotor_TSE7272)*100)
+     ,type="l",main="YamahaMotor_TSE7272"
+     ,xlab="time",ylab="YamahaMotor_TSE7272"
+     ,ylim=range(diff(log(YamahaMotor_TSE7272))*100))
+plot(diff(log(TakedaPharmaceuticalCompany_TSE4502)*100)
+     ,type="l",main="TakedaPharmaceuticalCompany_TSE4502"
+     ,xlab="time",ylab="TakedaPharmaceuticalCompany_TSE4502"
+     ,ylim=range(diff(log(TakedaPharmaceuticalCompany_TSE4502))*100))
+```
+##################################
+########時系列データ分布と要約###########
+##4銘柄の平均収益率
+```{r}
+mean(TakedaPharmaceuticalCompany_TSE4502)
+mean(PolaOrbisHoldings_TSE4927)
+mean(NipponSheetGlassCompany_TSE5202)
+mean(YamahaMotor_TSE7272)
+```
+
+
+####4銘柄のボラティリティ
+```{r}
+sd(NipponSheetGlassCompany_TSE5202)
+sd(PolaOrbisHoldings_TSE4927)
+sd(YamahaMotor_TSE7272)
+sd(TakedaPharmaceuticalCompany_TSE4502)
+```
+
+##μ、σ、histgram
+```{r}
+par(mfcol=c(2,2))
+hist(NipponSheetGlassCompany_TSE5202,main="NipponSheetGlassCompany_TSE5202")
+hist(PolaOrbisHoldings_TSE4927,main="PolaOrbisHoldings_TSE4927")
+hist(YamahaMotor_TSE7272,main="YamahaMotor_TSE7272")
+hist(TakedaPharmaceuticalCompany_TSE4502,main="TakedaPharmaceuticalCompany_TSE4502")
+```
+
+#散布図行列
+```{r}
+cor(YamahaMotor_TSE7272,TakedaPharmaceuticalCompany_TSE4502)
+plot(price4)
+cor(price4)##相関係数行列
+```
+##Shapiro-Wilk検定
+```{r}
+shapiro.test(PolaOrbisHoldings_TSE4927)
+shapiro.test(TakedaPharmaceuticalCompany_TSE4502)
+shapiro.test(NipponSheetGlassCompany_TSE5202)
+shapiro.test(YamahaMotor_TSE7272)
+```
+##　連の検定(runs test)
+```{r}
+library(tseries)
+yamaha=as.factor(YamahaMotor_TSE7272<mean(YamahaMotor_TSE7272))
+runs.test(yamaha)
+```
+
+Explore the time dependency for four stocks
+```{r}
+par(mfcol=c(2,1))
+plot(NipponSheetGlassCompany_TSE5202,type='l',main="NipponSheetGlassCompany_TSE5202")
+plot(NipponSheetGlassCompany_TSE5202/NipponSheetGlassCompany_TSE5202[1]
+     ,type="l",main="NipponSheetGlassCompany_TSE5202")
+abline(h=0,lty=3)
+
+par(mfcol=c(2,1))
+plot(NipponSheetGlassCompany_TSE5202,type = 'l',main="PolaOrbisHoldings_TSE4927")
+plot(PolaOrbisHoldings_TSE4927/PolaOrbisHoldings_TSE4927[1]
+     ,type="l",main="PolaOrbisHoldings_TSE4927")
+abline(h=0,lty=3)
+
+par(mfcol=c(2,1))
+plot(YamahaMotor_TSE7272,type = 'l',main="YamahaMotor_TSE7272")
+plot(YamahaMotor_TSE7272/YamahaMotor_TSE7272[1]
+     ,type="l",main="YamahaMotor_TSE7272")
+abline(h=0,lty=3)
+
+par(mfcol=c(2,1))
+plot(TakedaPharmaceuticalCompany_TSE4502,type = 'l',main="TakedaPharmaceuticalCompany_TSE4502")
+plot(TakedaPharmaceuticalCompany_TSE4502/TakedaPharmaceuticalCompany_TSE4502[1]
+     ,type="l",main="TakedaPharmaceuticalCompany_TSE4502")
+abline(h=0,lty=3)
+
+```

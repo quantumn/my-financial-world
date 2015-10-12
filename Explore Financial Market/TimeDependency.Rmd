@@ -1,0 +1,146 @@
+---
+title: "Time dependency"
+output: html_document
+---
+```{r}
+price4<- read.table('price4.txt',header = T)
+```
+
+Historical price
+```{r}
+NipponSheetGlassCompany_TSE5202<- price4$x5202
+PolaOrbisHoldings_TSE4927<- price4$x4927
+YamahaMotor_TSE7272<- price4$x7272
+TakedaPharmaceuticalCompany_TSE4502<- price4$x4502
+```
+
+Return on price start at time 0  
+```{r}
+Return_TSE5202<- NipponSheetGlassCompany_TSE5202/NipponSheetGlassCompany_TSE5202[1]
+Return_TSE4927<- PolaOrbisHoldings_TSE4927/PolaOrbisHoldings_TSE4927[1]
+Return_TSE7272<- YamahaMotor_TSE7272/YamahaMotor_TSE7272[1]
+Return_TSE4502<- TakedaPharmaceuticalCompany_TSE4502/TakedaPharmaceuticalCompany_TSE4502[1]
+
+```
+
+
+```{r}
+par(mfcol=c(2,2))
+plot(Return_TSE5202[1:120],Return_TSE5202[2:121])
+plot(Return_TSE4927[1:120],Return_TSE4927[2:121])
+plot(Return_TSE7272[1:120],Return_TSE7272[2:121])
+plot(Return_TSE4502[1:120],Return_TSE4502[2:121])
+```
+
+
+```{r}
+cor(Return_TSE5202[1:120],Return_TSE5202[2:121])
+cor(Return_TSE4927[1:120],Return_TSE4927[2:121])
+cor(Return_TSE7272[1:120],Return_TSE7272[2:121])
+cor(Return_TSE4502[1:120],Return_TSE4502[2:121])
+```
+
+
+```{r}
+acf(Return_TSE5202,plot=F)
+acf(Return_TSE5202)
+acf(Return_TSE4927,plot=F)
+acf(Return_TSE4927)
+acf(Return_TSE7272,plot=F)
+acf(Return_TSE7272)
+acf(Return_TSE4502,plot=F)
+acf(Return_TSE4502)
+
+```
+
+
+```{r}
+acf(Return_TSE5202,plot=F,type="partial") #or type="p"
+acf(Return_TSE5202,plot=T,type="partial") #or type="p"
+
+acf(Return_TSE4927,plot=F,type="partial") #or type="p"
+acf(Return_TSE4927,plot=T,type="partial") #or type="p"
+
+acf(Return_TSE7272,plot=F,type="partial") #or type="p"
+acf(Return_TSE7272,plot=T,type="partial") #or type="p"
+
+acf(Return_TSE4502,plot=F,type="partial") #or type="p"
+acf(Return_TSE4502,plot=T,type="partial") #or type="p"
+
+
+```
+
+Ljung=Box test for X
+```{r}
+Box.test(Return_TSE5202,type="L")
+
+Box.test(Return_TSE4927,type="L")
+
+Box.test(Return_TSE7272,type="L")
+
+Box.test(Return_TSE4502,type="L")
+
+```
+
+
+
+```{r}
+mean(Return_TSE5202)
+
+mean(Return_TSE4927)
+
+mean(Return_TSE7272)
+
+mean(Return_TSE4502)
+```
+
+
+
+```{r}
+acf(Return_TSE5202,plot=F,type="covariance")
+
+acf(Return_TSE4927,plot=F,type="covariance")
+
+acf(Return_TSE7272,plot=F,type="covariance")
+
+acf(Return_TSE4502,plot=F,type="covariance")
+```
+
+
+
+```{r}
+ar(Return_TSE5202,aic=F,order.max=1)
+(1-0.631)*mean(Return_TSE5202) #μを求める
+ar(Return_TSE5202,aic=T,oreder.max=1)
+
+ar(Return_TSE4927,aic=F,order.max=1)
+(1-0.631)*mean(Return_TSE4927) #μを求める
+ar(Return_TSE4927,aic=T,oreder.max=1)
+
+ar(Return_TSE7272,aic=F,order.max=1)
+(1-0.631)*mean(Return_TSE7272) #μを求める
+ar(Return_TSE7272,aic=T,oreder.max=1)
+
+ar(Return_TSE4502,aic=F,order.max=1)
+(1-0.631)*mean(Return_TSE4502) #μを求める
+ar(Return_TSE4502,aic=T,oreder.max=1)
+
+```
+
+Dickey-Fuller test
+```{r}
+library(tseries)
+adf.test(NipponSheetGlassCompany_TSE5202)
+adf.test(Return_TSE5202)
+
+adf.test(PolaOrbisHoldings_TSE4927)
+adf.test(Return_TSE4927)
+
+adf.test(YamahaMotor_TSE7272)
+adf.test(Return_TSE7272)
+
+adf.test(TakedaPharmaceuticalCompany_TSE4502)
+adf.test(Return_TSE4502)
+
+
+```
